@@ -1,4 +1,112 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No: 250541062
+AD-SOYAD: Ozan Diyar AY
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+BAŞLA
+
+  // --- 1. Aşama: Hazırlık ---
+  
+  TANIMLA malzemeler: yumurta, süt, tuz, karabiber, tereyağı
+  TANIMLA isteğe_bağlı_malzemeler: peynir, mantar, soğan, biber vb.
+  TANIMLA ekipmanlar: kase, çırpıcı, tava, spatula
+  
+  EĞER (gerekli tüm ekipmanlar ve malzemeler mevcut DEĞİLSE)
+    YAZDIR "Eksik malzeme veya ekipman var. Lütfen tamamlayın."
+    SONLAN
+  DEĞİLSE
+    YAZDIR "Tüm malzemeler ve ekipmanlar hazır. Omlet yapımına başlanıyor."
+  SON EĞER
+
+  // --- 2. Aşama: Yumurtaları Çırpma ---
+  
+  Yumurtaları kaseye KIR
+  Süt, tuz ve karabiberi EKLE
+  
+  TANIMLA çırpma_durumu = "çırpılmamış"
+  
+  SÜRECE (çırpma_durumu "tamamen karışmış ve köpüklü" DEĞİLSE)
+    Yumurtaları çırpıcı ile ÇIRP
+    KONTROL ET karışımın durumunu
+    EĞER (karışım homojen ve hafif köpüklü ise)
+      çırpma_durumu = "tamamen karışmış ve köpüklü"
+    SON EĞER
+  DÖNGÜ SONU
+  
+  YAZDIR "Yumurta karışımı mükemmel kıvamda."
+
+  // --- 3. Aşama: İsteğe Bağlı Malzemeleri Hazırlama ve Pişirme ---
+  
+  EĞER (isteğe_bağlı_malzemeler kullanılacaksa)
+    TANIMLA sayaç = 1
+    TÜM isteğe_bağlı_malzemeler İÇİN (malzeme)
+      malzemeyi DOĞRA
+      
+      // Bazı malzemeler ön pişirme gerektirir (mantar, soğan gibi)
+      EĞER (malzeme "ön pişirme gerektiriyorsa")
+        Tavayı ocağa KOY ve ISIT
+        Bir miktar yağ EKLE
+        Malzemeyi tavaya EKLE ve PİŞİR
+      SON EĞER
+      sayaç = sayaç + 1
+    DÖNGÜ SONU
+    YAZDIR "İsteğe bağlı malzemeler hazırlandı."
+  DEĞİLSE
+    YAZDIR "Ek malzeme kullanılmayacak."
+  SON EĞER
+
+  // --- 4. Aşama: Omleti Pişirme ---
+
+  Tavayı ocağa KOY
+  Ocağın altını orta ateşte AÇ
+  
+  TANIMLA tava_sıcaklığı = "soğuk"
+  SÜRECE (tava_sıcaklığı "yeterince sıcak" DEĞİLSE)
+    BEKLE
+    KONTROL ET tavanın sıcaklığını
+    EĞER (üzerine su damlatıldığında cızırdıyorsa)
+      tava_sıcaklığı = "yeterince sıcak"
+    SON EĞER
+  DÖNGÜ SONU
+  
+  Tereyağını tavaya EKLE ve ERİT
+  Yumurta karışımını tavaya DÖK
+  
+  YAZDIR "Omlet pişiyor, lütfen bekleyin..."
+  
+  TANIMLA pişme_durumu = "sıvı"
+  SÜRECE (pişme_durumu "kenarları katı, ortası hafif sulu" DEĞİLSE)
+    BEKLE
+    KONTROL ET omletin altını ve kenarlarını
+    EĞER (kenarları spatula ile kolayca kalkıyorsa ve ortası hafif nemli ise)
+      pişme_durumu = "kenarları katı, ortası hafif sulu"
+    SON EĞER
+  DÖNGÜ SONU
+
+  // --- 5. Aşama: Son Dokunuşlar ve Servis ---
+  
+  EĞER (isteğe_bağlı_malzemelerden peynir veya önceden pişirilenler varsa)
+    Bu malzemeleri omletin bir yarısına SERPİŞTİR
+  SON EĞER
+  
+  Spatula kullanarak omletin boş yarısını diğer yarısının üzerine KATLA
+  
+  BİRKAÇ SANİYE DAHA PİŞİR (peynirin erimesi için)
+  
+  Omleti dikkatlice servis tabağına AL
+  
+  YAZDIR "Mükemmel omletiniz hazır. Afiyet olsun!"
+  
+SON
+
+LLM'e verilen komut: Mükemmel omlet yapma işlemini analiz ederek bu işlemin koşullar ve döngüler içeren algoritmasını yani pseudocode'unu oluşturmanı istiyorum.
+Alınan cevap: Harika bir fikir! Mükemmel omlet yapma sürecini analiz edip, bu süreci adımlara dökerek koşullar ve döngüler içeren bir algoritma (pseudocode) oluşturalım.
+
+Mükemmel Omlet Algoritması
+Bu algoritma, malzemelerin hazırlanmasından pişirilip servis edilmesine kadar olan tüm süreci kapsar.
+
+Algoritmanın Açıklaması:
+Koşullar (EĞER / DEĞİLSE - IF / ELSE): Algoritma, kritik noktalarda kararlar vermek için koşul ifadeleri kullanır. Örneğin, malzemelerin eksik olup olmadığını kontrol eder veya isteğe bağlı malzeme kullanılıp kullanılmayacağına karar verir.
+
+Döngüler (SÜRECE - WHILE / İÇİN - FOR): Tekrar eden işlemleri verimli bir şekilde yapmak için döngüler kullanılır. Örneğin, yumurtaların istenen kıvama gelene kadar çırpılması bir SÜRECE (WHILE) döngüsü ile ifade edilirken, tüm isteğe bağlı malzemelerin sırayla hazırlanması İÇİN (FOR) döngüsü ile gösterilmiştir.
+
+Bu pseudocode, bir bilgisayar programı gibi düşünülebilir ve adım adım takip edildiğinde her seferinde "mükemmel" bir omlet yapma sürecini garantiler.
