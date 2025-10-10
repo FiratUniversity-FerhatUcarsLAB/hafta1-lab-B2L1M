@@ -1,4 +1,138 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No: 250541062
+AD-SOYAD: Ozan Diyar AY
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Renk Karışımı için Böl ve Fethet Algoritması (Pseudocode)
+
+// --- Ana Fonksiyon ---
+BAŞLA ALGORITMA Hedef_Rengi_Bul(hedef_renk, tolerans, maksimum_deneme)
+
+  // Başlangıç oranları: Her renkten eşit miktarda (nötr gri bir başlangıç)
+  TANIMLA mevcut_oranlar = [0.5, 0.5, 0.5] // [R, G, B]
+  
+  // Ayarlama miktarının başlangıç aralığı. Bu aralığı sürekli böleceğiz.
+  TANIMLA aralik = 0.5 
+  
+  TANIMLA deneme_sayisi = 0
+  
+  // Mevcut karışımın rengini ve hedefe olan uzaklığını hesapla
+  mevcut_renk = Renkleri_Karistir(mevcut_oranlar)
+  mevcut_fark = Renk_Farkini_Hesapla(mevcut_renk, hedef_renk)
+  
+  // Döngü: Fark toleranstan büyük olduğu ve deneme sınırını aşmadığımız sürece devam et
+  SÜRECE (mevcut_fark > tolerans VE deneme_sayisi < maksimum_deneme)
+  
+    // --- BÖL ---
+    // Arama aralığını her adımda ikiye bölüyoruz.
+    aralik = aralik / 2
+    
+    // Geçici olarak en iyi sonucu saklamak için değişkenler
+    en_iyi_yeni_oranlar = mevcut_oranlar
+    en_iyi_fark = mevcut_fark
+    
+    // --- FETHET ---
+    // Her bir renk kanalı için oranları artırmayı ve azaltmayı dene.
+    // Hangisi daha iyi sonuç veriyorsa onu seç.
+    
+    // Her renk kanalı için (i=0 -> R, i=1 -> G, i=2 -> B)
+    İÇİN i = 0'DAN 2'YE
+      
+      // Mevcut oranı kopyala
+      gecici_oranlar = KOPYALA(mevcut_oranlar)
+      
+      // 1. Deneme: Oranı 'aralik' kadar artır
+      gecici_oranlar[i] = mevcut_oranlar[i] + aralik
+      // Oranın 1.0'ı geçmediğinden emin ol
+      EĞER (gecici_oranlar[i] > 1.0) İSE gecici_oranlar[i] = 1.0
+      
+      yeni_renk = Renkleri_Karistir(gecici_oranlar)
+      yeni_fark = Renk_Farkini_Hesapla(yeni_renk, hedef_renk)
+      
+      // Eğer bu deneme bizi hedefe daha çok yaklaştırdıysa, en iyi olarak kaydet
+      EĞER (yeni_fark < en_iyi_fark)
+        en_iyi_fark = yeni_fark
+        en_iyi_yeni_oranlar = KOPYALA(gecici_oranlar)
+      SON EĞER
+      
+      // 2. Deneme: Oranı 'aralik' kadar azalt
+      gecici_oranlar[i] = mevcut_oranlar[i] - aralik
+      // Oranın 0.0'ın altına düşmediğinden emin ol
+      EĞER (gecici_oranlar[i] < 0.0) İSE gecici_oranlar[i] = 0.0
+      
+      yeni_renk = Renkleri_Karistir(gecici_oranlar)
+      yeni_fark = Renk_Farkini_Hesapla(yeni_renk, hedef_renk)
+      
+      // Eğer bu deneme bizi hedefe daha çok yaklaştırdıysa, en iyi olarak kaydet
+      EĞER (yeni_fark < en_iyi_fark)
+        en_iyi_fark = yeni_fark
+        en_iyi_yeni_oranlar = KOPYALA(gecici_oranlar)
+      SON EĞER
+      
+    DÖNGÜ SONU // Renk kanalları döngüsü
+    
+    // --- BİRLEŞTİR ---
+    // Bu adımdaki en iyi sonucu bir sonraki adımın başlangıcı olarak ata.
+    mevcut_oranlar = en_iyi_yeni_oranlar
+    mevcut_fark = en_iyi_fark
+    
+    deneme_sayisi = deneme_sayisi + 1
+    
+    YAZDIR "Deneme " + deneme_sayisi + ": Oranlar = " + mevcut_oranlar + ", Fark = " + mevcut_fark
+    
+  DÖNGÜ SONU // Ana döngü
+
+  YAZDIR "----------------------------------------"
+  YAZDIR "Hedefe ulaşıldı veya maksimum denemeye ulaşıldı."
+  
+  // Nihai sonucu döndür
+  DÖNDÜR mevcut_oranlar
+  
+SON ALGORITMA
+
+// --- Yardımcı Fonksiyonlar ---
+
+// Verilen oranlara göre RGB rengini hesaplar (0-255 aralığında)
+FONKSİYON Renkleri_Karistir(oranlar)
+  r = oranlar[0] * 255
+  g = oranlar[1] * 255
+  b = oranlar[2] * 255
+  DÖNDÜR [r, g, b]
+SON FONKSİYON
+
+// İki renk arasındaki sayısal farkı (uzaklığı) hesaplar
+FONKSİYON Renk_Farkini_Hesapla(renk1, renk2)
+  fark_r = (renk1[0] - renk2[0])^2
+  fark_g = (renk1[1] - renk2[1])^2
+  fark_b = (renk1[2] - renk2[2])^2
+  DÖNDÜR KAREKÖK(fark_r + fark_g + fark_b)
+SON FONKSİYON
+
+LLM'e verilen komut: Renkleri karıştırarak hedef rengi bulma problemini böl ve fethet yaklaşımıyla çözümleyen bir algoritma oluşturmanı istiyorum.
+
+Alınan Cevap: Elbette, bu ilginç problemi "Böl ve Fethet" (Divide and Conquer) yaklaşımıyla çözen bir algoritma oluşturalım.
+Bu problem, doğrudan bir dizi veya listede arama yapmaktan farklı olduğu için, Böl ve Fethet mantığını bir arama uzayını (renk oranları aralığını) daraltmak için kullanacağız. Bu, aslında bir tür ikili arama (binary search) varyasyonudur ve ikili arama da klasik bir Böl ve Fethet örneğidir.
+Yaklaşımın Mantığı
+Böl (Divide): Problemimiz, ana renklerin (Kırmızı, Yeşil, Mavi - RGB modelini temel alalım) 0% ile 100% arasındaki doğru oranını bulmaktır. Her adımda, her bir ana renk için arama aralığını ikiye böleceğiz. Örneğin, Kırmızı için [0, 100] aralığıyla başlarız, ortadaki değer olan 50'yi deneriz ve sonuca göre aralığı [0, 49] veya [51, 100] olarak daraltırız.
+Fethet (Conquer): Her bölme adımında, oluşturulan yeni renk karışımını hedef renkle karşılaştırırız. Hangi değişikliğin (örneğin, Kırmızıyı artırmanın mı yoksa azaltmanın mı) bizi hedefe daha çok yaklaştırdığını bularak problemi "fethederiz". Bu, en küçük farkı veren seçeneği bulmaktır.
+Birleştir (Combine): Bu problemde "birleştirme" adımı, her fethetme adımında bulunan en iyi oranları bir sonraki adıma taşımaktır. Süreç, mevcut renk ile hedef renk arasındaki fark kabul edilebilir bir toleransın altına düştüğünde sona erer ve nihai oranlar birleştirilmiş sonuç olur.
+
+Algoritmanın Çalışma Örneği
+Hedef: Canlı bir Mor rengi bulmak. RGB değeri: [128, 0, 128]
+Tolerans: 5.0 (renkler arası fark bu değerin altına düşünce dur)
+Maksimum Deneme: 20
+Başlangıç:
+mevcut_oranlar = [0.5, 0.5, 0.5] -> Karışım sonucu: [127.5, 127.5, 127.5] (Gri)
+aralik = 0.5
+1. Deneme:
+aralik = 0.25'e bölünür.
+Algoritma R, G, B'yi 0.25 artırmayı ve azaltmayı dener.
+En iyi hamle: Yeşil'i (G) azaltmak olacaktır, çünkü hedefte hiç yeşil yok. Kırmızı ve Mavi'yi artırmak da iyi sonuç verir.
+Diyelim ki en iyi sonucu G'yi azaltmak verdi. Yeni oranlar [0.5, 0.25, 0.5] olur.
+2. Deneme:
+aralik = 0.125'e bölünür.
+Yeni oranlar ([0.5, 0.25, 0.5]) üzerinden yine tüm renkler 0.125 artırılıp azaltılarak denenir.
+En iyi hamle: Muhtemelen Kırmızı ve Mavi'yi artırıp, Yeşil'i tekrar azaltmak olacaktır.
+...ve Sonrası:
+Bu süreç aralik değeri çok küçülene kadar devam eder. Her adımda mevcut_oranlar hedefe daha da yaklaşır. [0.5, 0.0, 0.5] oranlarına yakın bir sonuç bulunduğunda, renk farkı toleransın altına düşer ve döngü sona erer.
+Bu algoritma, her adımda arama uzayını sistematik olarak küçülterek hedefe verimli bir şekilde yakınsar.
