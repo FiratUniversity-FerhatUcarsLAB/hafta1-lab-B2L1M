@@ -1,4 +1,105 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No: 250541062
+AD-SOYAD: Ozan Diyar AY
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Market Ürün Kategorizasyon Algoritması (Pseudocode)
+
+// Ana Fonksiyon: Tüm envanter listesini alır ve her bir ürünü kategorize eder.
+BAŞLA ALGORİTMA Kategorize_Et(envanter_listesi)
+
+  // --- 1. Aşama: Kategori ve Anahtar Kelimeleri Tanımlama ---
+  
+  TANIMLA Kategori_Sözlüğü:
+    "Süt ve Süt Ürünleri": ["süt", "peynir", "yoğurt", "tereyağı", "ayran", "kefir"]
+    "Et ve Et Ürünleri": ["kıyma", "biftek", "tavuk", "hindi", "salam", "sosis", "sucuk"]
+    "Meyve ve Sebze": ["elma", "domates", "salatalık", "biber", "muz", "patates", "soğan"]
+    "Temel Gıda": ["makarna", "pirinç", "bulgur", "un", "şeker", "tuz", "salça", "sıvı yağ"]
+    "Atıştırmalıklar": ["cips", "bisküvi", "çikolata", "kraker", "gofret", "kuruyemiş"]
+    "İçecekler": ["su", "kola", "gazoz", "meyve suyu", "soda", "limonata"]
+    "Temizlik Ürünleri": ["deterjan", "çamaşır suyu", "yüzey temizleyici", "bulaşık tableti"]
+    "Kişisel Bakım": ["şampuan", "sabun", "diş macunu", "deodorant", "traş bıçağı"]
+    "Bebek Ürünleri": ["bebek bezi", "mama", "biberon", "ıslak mendil"]
+  
+  // --- 2. Aşama: Envanterdeki Her Ürünü Döngüye Al ---
+
+  TÜM ürün İÇİN envanter_listesi
+    
+    ürün.kategori = "Diğer" // Başlangıçta varsayılan kategori atanır
+    TANIMLA kategori_bulundu = HAYIR
+
+    // Ürün adını daha kolay arama için küçük harfe çevir
+    TANIMLA ürün_adi_kucuk_harf = KÜÇÜK_HARFE_ÇEVİR(ürün.adi)
+
+    // --- 3. Aşama: Özel Kuralları Kontrol Et (Daha spesifik kategoriler için) ---
+    
+    EĞER (ürün_adi_kucuk_harf İÇERİR "light" VEYA ürün_adi_kucuk_harf İÇERİR "diyet") VE (ürün_adi_kucuk_harf İÇERİR "kola" VEYA ürün_adi_kucuk_harf İÇERİR "gazoz")
+      ürün.kategori = "Diyet İçecekler"
+      kategori_bulundu = EVET
+    SON EĞER
+
+    EĞER (kategori_bulundu == HAYIR) VE (ürün_adi_kucuk_harf İÇERİR "organik") VE (ürün_adi_kucuk_harf İÇERİR "yumurta")
+      ürün.kategori = "Organik Ürünler"
+      kategori_bulundu = EVET
+    SON EĞER
+    
+    // --- 4. Aşama: Anahtar Kelime Eşleştirmesi (Daha genel kategoriler için) ---
+    
+    // Eğer özel kurallar eşleşmediyse, anahtar kelime sözlüğünü kontrol et
+    EĞER (kategori_bulundu == HAYIR)
+      TÜM kategori, anahtar_kelimeler İÇİN Kategori_Sözlüğü
+        TÜM anahtar_kelime İÇİN anahtar_kelimeler
+          EĞER (ürün_adi_kucuk_harf İÇERİR anahtar_kelime)
+            ürün.kategori = kategori
+            kategori_bulundu = EVET
+            İÇ DÖNGÜYÜ BİTİR // İlk eşleşme bulunduğunda diğer anahtar kelimelere bakma
+          SON EĞER
+        DÖNGÜ SONU
+        
+        EĞER (kategori_bulundu == EVET)
+          DIŞ DÖNGÜYÜ BİTİR // Kategori bulunduğunda diğer kategorilere bakma
+        SON EĞER
+      DÖNGÜ SONU
+    SON EĞER
+    
+    // --- 5. Aşama: Sonucu Yazdır ---
+    
+    YAZDIR "Ürün: " + ürün.adi + " -> Kategori: " + ürün.kategori
+
+  DÖNGÜ SONU
+
+SON ALGORITMA
+
+LLM'e verilen komut: Market envanterindeki ürünleri kategorilere ayıran bir algoritma (pseudocode) oluşturmanı istiyorum.
+
+Alınan Cevap: Harika bir fikir! Market envanterindeki ürünleri verimli bir şekilde kategorilere ayıran, hem anahtar kelime tabanlı hem de kural tabanlı bir yaklaşım kullanan bir algoritma (pseudocode) oluşturalım.
+​Bu algoritma, her ürünün adını ve varsa diğer özelliklerini (örneğin marka, açıklama) analiz ederek en uygun kategoriyi belirlemeye çalışır.
+​Kategorizasyon Stratejisi
+​Algoritma, en spesifik kategoriden en genele doğru bir hiyerarşi izleyecektir. Bu sayede bir ürünün birden fazla kategoriye uyma potansiyeli olduğunda en doğru ve en özel kategoriye atanması sağlanır.
+​Anahtar Kelime Eşleştirme: Ürün adında veya açıklamasında belirli anahtar kelimeler aranır. (Örn: "süt", "peynir", "domates", "şampuan").
+​Kural Tabanlı Mantık: Daha karmaşık durumlar için kurallar tanımlanır. (Örn: "Light" veya "Diyet" içeren içecekler -> "Diyet İçecekler" kategorisi).
+​Varsayılan Kategori: Hiçbir kural veya anahtar kelime eşleşmezse, ürün "Diğer" veya "Genel" gibi bir varsayılan kategoriye atanır.
+
+Algoritmanın Çalışma Örneği:
+Envanter Listesi:
+Ürün 1: "Organik Gezen Tavuk Yumurtası 10'lu"
+Ürün 2: "Dana Kıyma 500g"
+Ürün 3: "Diyet Kola 1L"
+Ürün 4: "Ahşap Kesme Tahtası"
+Algoritmanın Adımları:
+"Organik Gezen Tavuk Yumurtası 10'lu" için:
+Özel kural kontrolü yapılır. "organik" ve "yumurta" kelimeleri eşleşir.
+Kategori: "Organik Ürünler" olarak atanır.
+"Dana Kıyma 500g" için:
+Özel kurallar eşleşmez.
+Anahtar kelime sözlüğüne geçilir. "kıyma" kelimesi "Et ve Et Ürünleri" kategorisindeki anahtar kelimelerle eşleşir.
+Kategori: "Et ve Et Ürünleri" olarak atanır.
+"Diyet Kola 1L" için:
+Özel kural kontrolü yapılır. "diyet" ve "kola" kelimeleri eşleşir.
+Kategori: "Diyet İçecekler" olarak atanır.
+"Ahşap Kesme Tahtası" için:
+Özel kurallar eşleşmez.
+Anahtar kelime sözlüğündeki hiçbir anahtar kelime eşleşmez.
+Varsayılan kategori değişmeden kalır.
+Kategori: "Diğer" olarak atanır.
+Bu algoritma, yeni kategoriler ve anahtar kelimeler eklenerek kolayca genişletilebilir ve daha akıllı hale getirilebilir.
