@@ -1,4 +1,113 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No: 250541062
+AD-SOYAD: Ozan Diyar AY
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Tic-Tac-Toe Kazanma Algoritması (Pseudocode)
+// Algoritmanın ana fonksiyonu. Her turda bu fonksiyon çağrılır.
+// Girdi olarak mevcut oyun tahtasını ve AI'nin kullandığı işareti (X veya O) alır.
+
+BAŞLA ALGORITMA AI_HamleYap(oyun_tahtasi, AI_isareti)
+
+  // Rakibin işaretini belirle
+  EĞER (AI_isareti == 'X')
+    rakip_isareti = 'O'
+  DEĞİLSE
+    rakip_isareti = 'X'
+  SON EĞER
+
+  // --- Öncelik 1: Kazanma Hamlesi Ara ---
+  kazanma_noktasi = Kazanma_Hamlesi_Bul(oyun_tahtasi, AI_isareti)
+  EĞER (kazanma_noktasi != boş)
+    İŞARET KOY(kazanma_noktasi, AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+  // --- Öncelik 2: Rakibin Kazanmasını Engelle ---
+  engelleme_noktasi = Kazanma_Hamlesi_Bul(oyun_tahtasi, rakip_isareti)
+  EĞER (engelleme_noktasi != boş)
+    İŞARET KOY(engelleme_noktasi, AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+  // --- Öncelik 3: Çatal Kurma Fırsatı Ara ---
+  catal_noktasi = Catal_Hamlesi_Bul(oyun_tahtasi, AI_isareti)
+  EĞER (catal_noktasi != boş)
+    İŞARET KOY(catal_noktasi, AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+  // --- Öncelik 4: Rakibin Çatalını Engelleme Fırsatı Ara ---
+  rakip_catal_engelleme_noktasi = Rakip_Catalini_Engelle(oyun_tahtasi, AI_isareti, rakip_isareti)
+  EĞER (rakip_catal_engelleme_noktasi != boş)
+    İŞARET KOY(rakip_catal_engelleme_noktasi, AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+  // --- Öncelik 5: Stratejik Konumlanma ---
+
+  // 5.1: Merkezi al
+  EĞER (oyun_tahtasi[1][1] == boş)
+    İŞARET KOY([1,1], AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+  // 5.2: Rakibin köşesine zıt bir köşe al
+  karsit_kose = Karsit_Kose_Bul(oyun_tahtasi, rakip_isareti)
+  EĞER (karsit_kose != boş)
+    İŞARET KOY(karsit_kose, AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+  // 5.3: Boş bir köşe al
+  bos_kose = Bos_Kose_Bul(oyun_tahtasi)
+  EĞER (bos_kose != boş)
+    İŞARET KOY(bos_kose, AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+  // 5.4: Boş bir kenar al
+  bos_kenar = Bos_Kenar_Bul(oyun_tahtasi)
+  EĞER (bos_kenar != boş)
+    İŞARET KOY(bos_kenar, AI_isareti)
+    ALGORİTMAYI BİTİR
+  SON EĞER
+
+SON ALGORITMA
+
+LLM'e verilen komut: Tic Tac Toe oyunu için karar verme mantığını ve rakip hamlelerini öngörmeyi içeren bir kazanma stratejisi algoritması (pseudocode) oluşturmanı istiyorum.
+
+Alıman Cevap: Elbette, Tic-Tac-Toe oyunu için yenilmesi zor (optimal) bir strateji geliştiren, karar verme mantığına dayalı bir algoritmayı (pseudocode) aşağıda bulabilirsiniz.
+Bu algoritma, her adımda en mantıklı hamleyi bulmak için bir öncelik sırasına göre hareket eder. Amaç önce kazanmak, kazanamıyorsa kaybetmemek ve sonrasında en stratejik konumu almaktır.
+Kazanma Stratejisinin Öncelik Sırası
+Algoritma, aşağıdaki adımları sırayla kontrol eder ve uygulayabileceği ilk adımı anında gerçekleştirir:
+ * Kazanma Hamlesi (Win): Eğer tek bir hamle ile oyunu kazanabiliyorsam (yani aynı sırada, sütunda veya köşegende iki işaretim varsa), o hamleyi oyna.
+ * Rakibi Engelleme Hamlesi (Block): Eğer rakip bir sonraki hamlede kazanabiliyorsa (yani aynı sırada, sütunda veya köşegende iki işareti varsa), onun kazanmasını engellemek için o hamleyi oyna.
+ * Çatal Kurma (Fork): Tek bir hamle ile kendin için iki farklı kazanma yolu oluştur. Rakip bunlardan sadece birini engelleyebilir ve bir sonraki turda sen kazanırsın.
+ * Rakibin Çatalını Engelleme (Block Fork): Rakibin bir sonraki hamlede "Çatal" kurma olasılığını tespit et ve bunu engelle. Bu, rakibi savunma yapmaya zorlayarak veya potansiyel çatal noktasını doldurarak yapılır.
+ * Stratejik Konumlanma (Strategic Move): Yukarıdaki adımlardan hiçbiri mümkün değilse, en stratejik boş kareyi oyna. Stratejik öncelik sırası şöyledir:
+   * Merkez: En güçlü kare.
+   * Karşı Köşe: Eğer rakip bir köşeye oynadıysa, onun tam zıttındaki köşeyi al.
+   * Boş Köşe: Herhangi bir boş köşeyi al.
+   * Boş Kenar: Herhangi bir boş kenarı (köşe olmayan) al.
+
+Yardımcı Fonksiyonların Açıklamaları
+Yukarıdaki ana algoritmanın çalışması için bazı yardımcı fonksiyonlara ihtiyacı vardır. Bu fonksiyonların ne işe yaradığı aşağıda açıklanmıştır:
+ * Kazanma_Hamlesi_Bul(tahta, işaret):
+   * Tüm sıraları, sütunları ve köşegenleri kontrol eder.
+   * Eğer bir hatta, verilen işaret'e ait iki sembol ve bir boş kare varsa, o boş karenin koordinatlarını döndürür.
+   * Böyle bir durum yoksa boş döndürür.
+ * Catal_Hamlesi_Bul(tahta, işaret):
+   * Tahtadaki tüm boş kareleri tek tek dener.
+   * Her boş kare için, AI oraya oynarsa aynı anda kaç tane kazanma hattı (iki işaretli ve bir boşlu hat) oluşturduğunu sayar.
+   * Eğer bir hamle aynı anda 2 veya daha fazla kazanma hattı oluşturuyorsa, bu bir çatal hamlesidir. O karenin koordinatlarını döndürür.
+   * Böyle bir durum yoksa boş döndürür.
+ * Rakip_Catalini_Engelle(tahta, AI_isareti, rakip_isareti):
+   * Bu en karmaşık adımdır. Rakibin bir sonraki hamlede çatal kurmasını öngörmeye çalışır.
+   * Catal_Hamlesi_Bul fonksiyonunu rakip için simüle eder. Eğer rakibin bir çatal noktası varsa, AI'nin bu noktayı engellemesi gerekir.
+   * Engellemenin birden fazla yolu olabilir. Genellikle en iyi yol, rakibi acil bir savunma yapmaya zorlayacak bir hamle yapmaktır (örneğin, kendi kazanma hattınızı oluşturmak) veya doğrudan çatal noktalarından birini doldurmaktır.
+ * Karsit_Kose_Bul(tahta, rakip_isareti):
+   * Eğer rakip bir köşeye (örn: [0,0]) oynamışsa ve tam zıttındaki köşe (örn: [2,2]) boşsa, o zıt köşenin koordinatlarını döndürür.
+ * Bos_Kose_Bul(tahta) ve Bos_Kenar_Bul(tahta):
+   * Sırasıyla, tahtadaki mevcut boş köşe veya kenar karelerinden birinin koordinatını döndürür.
+Bu algoritma, Tic-Tac-Toe oyununun tüm temel stratejilerini içerir ve uygulandığında ya kazanır ya da oyunu berabere bitirir; yani asla kaybetmez.
